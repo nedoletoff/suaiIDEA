@@ -4,7 +4,7 @@ IDEAROUNDS = 8
 IDEAKEYLEN = 6 * IDEAROUNDS + 4
 
 class IDEA:
-    
+    print()
 
 
 
