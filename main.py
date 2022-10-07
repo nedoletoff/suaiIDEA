@@ -1,3 +1,6 @@
+import ctypes
+
+
 class IDEA(object):
     IDEAKEYSIZE = 16
     IDEABLOCKSIZE = 8
@@ -12,7 +15,5 @@ class IDEA(object):
               IDEA.IDEAKEYLEN)
 
 
-IDEA.pr()
-l = list()
-l.append("2")
-print(l)
+dll = ctypes.cdll.LoadLibrary(r".\library.dll")
+dll.get_text()
