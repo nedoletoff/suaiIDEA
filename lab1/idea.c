@@ -7,7 +7,7 @@ typedef unsigned long word32; /* values are 0-4294967295 */
 
 #ifndef TRUE
 #define FALSE 0
-#define TRUE(!FALSE)
+#define TRUE 1
 #endif /* if TRUE not already defined */
 
 #ifndef min /* if min macro not already defined */
@@ -18,7 +18,7 @@ typedef unsigned long word32; /* values are 0-4294967295 */
 #define IDEAKEYSIZE 16
 #define IDEABLOCKSIZE 8
 #define IDEAROUNDS 8
-#define IDEAKEYLEN(6 * IDEAROUNDS + 4)
+#define IDEAKEYLEN (6 * IDEAROUNDS + 4)
 
 typedef struct {
   word16 ek[IDEAKEYLEN], dk[IDEAKEYLEN];
@@ -142,6 +142,7 @@ static void ideaInvertKey(word16 const *EK, word16 DK[IDEAKEYLEN]) {
     x = low16(t32), \
     t16 = t32 >> 16, \
     x = (x - t16) + (x < t16))
+
 #else /* !AVOID_JUMPS (default) */
 #define MUL(x, y)\\
   ((t16 = (y))\ ?
