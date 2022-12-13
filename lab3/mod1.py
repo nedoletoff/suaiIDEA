@@ -30,7 +30,6 @@ def convert():
     label_private_keys.pack()
     label_errors.pack()
 
-
 def button_click():
     if not first_entry.get().isdigit():
         label_errors["text"] = "First num is not num"
@@ -49,8 +48,10 @@ def button_click():
 
     try:
         public, private = rsa.generate_key_pair(int(first_entry.get()), int(second_entry.get()))
-        label_public_keys["text"] = str(public)
-        label_private_keys["text"] = str(private)
+        label_public_keys.delete(1.0, tk.END)
+        label_private_keys.delete(1.0, tk.END)
+        label_public_keys.insert(1.0, str(public))
+        label_private_keys.insert(1.0, str(private))
     except Exception as e:
         label_errors["text"] = str(e)
 
@@ -89,7 +90,7 @@ label_public_keys_text = tk.Label(
     width=width_m,
 )
 
-label_public_keys = tk.Label(
+label_public_keys = tk.Text(
     height=1,
     fg="black",
     bg="white",
@@ -103,7 +104,7 @@ label_private_keys_text = tk.Label(
     width=width_m,
 )
 
-label_private_keys = tk.Label(
+label_private_keys = tk.Text(
     height=1,
     fg="black",
     bg="white",
