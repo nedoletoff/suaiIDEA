@@ -33,6 +33,8 @@ def multiplicative_inverse(e, phi):
 
 
 def is_prime(num):
+    if num < 2:
+        return False
     if num == 2:
         return True
     if num < 2 or num % 2 == 0:
@@ -80,7 +82,13 @@ def main():
     print("RSA")
 
     p = int(input(" - Enter a prime number: "))
+    while not (is_prime(p)):
+        print("Error: {0} is not prime".format(p))
+        p = int(input(" - Enter a prime number: "))
     q = int(input(" - Enter another prime number: "))
+    while not (is_prime(q)):
+        print("Error: {0} is not prime".format(q))
+        q = int(input(" - Enter a prime number: "))
 
     print(" - Generating your public / private key-pairs now . . .")
 
