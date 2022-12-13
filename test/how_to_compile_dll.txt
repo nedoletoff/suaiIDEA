@@ -1,2 +1,0 @@
-gcc -c filename.c
-gcc -shared -o libname.dll filename.o
