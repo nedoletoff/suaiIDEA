@@ -32,14 +32,14 @@ def convert():
 
 
 def button_click():
-    if not first_entry.get().isalnum():
+    if not first_entry.get().isdigit():
         label_errors["text"] = "First num is not num"
         return
     if not rsa.is_prime(int(first_entry.get())):
         label_errors["text"] = "First num is not prime num"
         return
 
-    if not second_entry.get().isalnum():
+    if not second_entry.get().isdigit():
         label_errors["text"] = "Second num is not num"
         return
     if not rsa.is_prime(int(second_entry.get())):
