@@ -19,6 +19,7 @@ class Text:
 
 
 window = tk.Tk()
+window.wm_title("mod23")
 width_m = 50
 entrys = Text()
 

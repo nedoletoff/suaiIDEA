@@ -17,6 +17,7 @@ class Text:
 
 
 window = tk.Tk()
+window.wm_title("mod4")
 width_m = 50
 entrys = Text()
 
@@ -71,6 +72,7 @@ def button_click():
         label_signature.insert(1.0, rsa.decrypt(private, num))
     except Exception as e:
         label_errors["text"] = str(e)
+        #raise e
 
 
 btn_generate = tk.Button(

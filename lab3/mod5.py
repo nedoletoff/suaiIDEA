@@ -6,18 +6,20 @@ import viziner
 
 @dataclass
 class Text:
-    signature: tk.Text
+    value_salted: tk.Text
+    salt: tk.Entry
     rsa_first: tk.Entry
     rsa_second: tk.Entry
 
     def __init__(self):
-        self.signature = None
+        self.value_salted = None
+        self.salt = None
         self.rsa_first = None
         self.rsa_second = None
 
 
 window = tk.Tk()
-window.wm_title("mod7")
+window.wm_title("mod5")
 width_m = 50
 entrys = Text()
 
@@ -33,28 +35,32 @@ def add_gap():
 def convert():
     add_gap()
     label_num.pack()
-    entrys.signature.pack()
+    entrys.value_salted.pack()
+    add_gap()
+    label_salt.pack()
+    entrys.salt.pack()
     add_gap()
     label_rsa.pack()
     entrys.rsa_first.pack()
     entrys.rsa_second.pack()
     btn_generate.pack()
-    label_result_text.pack()
+    label_signature_text.pack()
     add_gap()
-    label_result.pack()
+    label_signature.pack()
     add_gap()
     label_errors.pack()
 
 
 def button_click():
-    num = entrys.signature.get(1.0, tk.END).split('\n')[0]
-    num = num.split()
-    for i, el in enumerate(num):
-        if not el.isdigit():
-            label_errors["text"] = "Signature string wrong"
-            return
-        else:
-            num[i] = int(el)
+    num = entrys.value_salted.get(1.0, tk.END)
+    if not entrys.salt.get().isascii():
+        label_errors["text"] = "Slat wrong"
+        print(entrys.salt.get(), "salt")
+        return
+
+    if not num.isascii():
+        label_errors["text"] = "Text wrong"
+        return
 
     if not entrys.rsa_first.get().isdigit():
         label_errors["text"] = "First RSA wrong"
@@ -66,33 +72,47 @@ def button_click():
     label_errors["text"] = ""
 
     try:
-        private = (int(entrys.rsa_first.get()), int(entrys.rsa_second.get()))
+        public = (int(entrys.rsa_first.get()), int(entrys.rsa_second.get()))
+        res = viziner.decipher(num, entrys.salt.get())
+        text = rsa.encrypt(public, res)
 
-        label_result.delete(1.0, tk.END)
-        label_result.insert(1.0, rsa.decrypt(private, num))
+        label_signature.delete(1.0, tk.END)
+        label_signature.insert(1.0, text)
     except Exception as e:
         label_errors["text"] = str(e)
+        raise e
 
 
 btn_generate = tk.Button(
-    text="check",
+    text="signature",
     command=button_click
 )
 
 label_num = tk.Label(
-    text="Enter signature",
+    text="Enter num",
     fg="black",
     bg="white",
     width=width_m,
 )
 
-entrys.signature = tk.Text(
+entrys.value_salted = tk.Text(
     width=width_m,
     height=3
 )
 
+label_salt = tk.Label(
+    text="Enter a salt",
+    fg="black",
+    bg="white",
+    width=width_m,
+)
+
+entrys.salt = tk.Entry(
+    width=width_m
+)
+
 label_rsa = tk.Label(
-    text="Enter RSA private keys",
+    text="Enter RSA public keys",
     fg="black",
     bg="white",
     width=width_m,
@@ -106,14 +126,14 @@ entrys.rsa_second = tk.Entry(
     width=width_m
 )
 
-label_result_text = tk.Label(
-    text="Result",
+label_signature_text = tk.Label(
+    text="Signature",
     fg="black",
     bg="white",
     width=width_m,
 )
 
-label_result = tk.Text(
+label_signature = tk.Text(
     height=5,
     fg="black",
     bg="white",

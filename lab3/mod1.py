@@ -3,6 +3,7 @@ import rsa
 
 window = tk.Tk()
 width_m = 50
+window.wm_title("mod1")
 
 
 def add_gap():
