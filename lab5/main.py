@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+
+
 def Berlekamp_Massey_algorithm(sequence):
     N = len(sequence)
     s = sequence[:]
@@ -48,21 +51,40 @@ def Berlekamp_Massey_algorithm(sequence):
     return print_poly(f), l
 
 
+def read_sequence() -> list:
+    text = ''
+    with open('sequence.txt', 'r') as f:
+        for line in f:
+            text += line
+    sequence = text.split(', ')
+    sequence.pop(-1)
+    sequence = [int(i) for i in sequence]
+    return sequence
+
+
+def get_symbols(num, sequence):
+    symbols = sequence[:num]
+    return symbols
+
+
+def draw_plot(linear_list: list, lenght_list: list):
+    plt.plot(lenght_list, linear_list)
+    plt.plot(lenght_list, lenght_list, 'r')
+    plt.xlabel('Length of sequence')
+    plt.ylabel('Linear complexity')
+    plt.title('Linear complexity')
+    plt.savefig('plot.png')
+    plt.show()
+
+
 if __name__ == '__main__':
-    seq = \
-        (1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1,
-         1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
-         1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0,
-         0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0,
-         0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0,
-         1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1,
-         1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0,
-         1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1,
-         1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1,
-         1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0,
-         0, 1, 0, 0)
-
-    (poly, span) = Berlekamp_Massey_algorithm(seq)
-
-    print(poly)
-    print(span)
+    seq = read_sequence()
+    linear_list = []
+    for i in range(1, len(seq) + 1):
+        # print(get_symbols(i, seq))
+        poly, linear = Berlekamp_Massey_algorithm(get_symbols(i, seq))
+        print(f"Length: {i}")
+        print(f"Polynomial: {poly}")
+        print(f"Linear: {linear}\n")
+        linear_list.append(linear)
+    draw_plot(linear_list, list(range(1, len(seq) + 1)))
