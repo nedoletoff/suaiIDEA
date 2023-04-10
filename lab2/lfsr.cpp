@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <bitset>
 #include <ctime>
 using namespace std;
@@ -72,13 +73,14 @@ int main() {
     LFSR* lfsr2 = new LFSR(secondPolynomial, SECOND_POLYNOMIAL_SIZE);
     LFSR* lfsr3 = new LFSR(thirdPolynomial, THIRD_POLYNOMIAL_SIZE);
 
-    int limit = 2000;
+    int limit = 100;
     bool res1;
     bool res2;
     bool res3;
     int counter1 = 0;
     int counter0 = 0;
     bool res;
+    std::string resString = "";
     cout << "LFSR:" << endl;
     for (int i = 1; i <= limit; i++) {
         res1 = lfsr1->getNext();
@@ -86,6 +88,8 @@ int main() {
         res3 = lfsr3->getNext();
 
         res = ((res1 & res2) ^ (res2 & res3) ^ (res1 & res3));
+
+        resString += std::to_string(res) + ", ";
         if (res)
             counter1++;
         else
@@ -98,5 +102,14 @@ int main() {
     }
     cout << "Counter 0: " << counter0 << endl;
     cout << "Counter 1: " << counter1 << endl;
+
+    resString.erase(resString.end() - 2);
+    std::ofstream out;
+    out.open("100bit.txt");
+    if (out.is_open()) {
+        out << resString << std::endl;
+    }
+    out.close();
+
     return 0;
 }
