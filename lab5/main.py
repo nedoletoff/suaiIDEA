@@ -77,14 +77,21 @@ def draw_plot(linear_list: list, lenght_list: list):
     plt.show()
 
 
+def write_result(seq):
+    with open("result.txt", "w") as f:
+        for i in range(1, len(seq) + 1):
+            temp_poly, temp_linear = Berlekamp_Massey_algorithm(get_symbols(i, seq))
+            f.write(f"Length: {i:3d}, \tLinear: {temp_linear:2d}, \tPolynomial: {temp_poly};\n")
+
+
 if __name__ == '__main__':
     seq = read_sequence()
     linear_list = []
     for i in range(1, len(seq) + 1):
-        # print(get_symbols(i, seq))
         poly, linear = Berlekamp_Massey_algorithm(get_symbols(i, seq))
         print(f"Length: {i}")
         print(f"Polynomial: {poly}")
         print(f"Linear: {linear}\n")
         linear_list.append(linear)
+    write_result(seq)
     draw_plot(linear_list, list(range(1, len(seq) + 1)))
