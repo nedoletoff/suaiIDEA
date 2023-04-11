@@ -68,8 +68,9 @@ def get_symbols(num, sequence):
 
 
 def draw_plot(linear_list: list, lenght_list: list):
+    temp = [x / 2 for x in lenght_list]
     plt.plot(lenght_list, linear_list)
-    plt.plot(lenght_list, lenght_list, 'r')
+    plt.plot(lenght_list, temp, 'r')
     plt.xlabel('Length of sequence')
     plt.ylabel('Linear complexity')
     plt.title('Linear complexity')
